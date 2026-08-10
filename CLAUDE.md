@@ -10,9 +10,14 @@ Redoing Phase 1 on purpose — not first exposure. Goal: verify fundamentals, ca
 
 ## Current status
 
-**Phase 1 — Foundation (mo 1-3, wk 1-12).** Starting at Week 1.
+**Phase 1 — Foundation (mo 1-3, wk 1-12).** Currently: Week 3 — tool/function calling schemas.
 
 Update this line as weeks/checkpoints complete: `Currently: Week X — <topic>`.
+
+### Completed weeks
+
+- **Week 1** — [week01-prompting/](week01-prompting/) — CLI script hitting Groq via OpenAI-compatible SDK (`app.py`, `config.py`). Architecture diagram: [Exiladraw/week1-cli-tool.excalidraw](week01-prompting/Exiladraw/week1-cli-tool.excalidraw). Bugs hit + fixed: env-load order (`load_dotenv()` never called), SDK base_url pointing at OpenAI instead of Groq, legacy `completions.create` vs `chat.completions.create`, Windows console cp1252 vs UTF-8 output encoding — logged in "Recurring small-detail gaps" below.
+- **Week 2** — [week02-structured-output/](week02-structured-output/) — `get_recipe()` in `app.py` forces JSON via Groq `response_format` (json_schema mode), validates with `Recipe.model_validate_json()` (`models.py`), retries up to 3x on `ValidationError` feeding the error back into the prompt. Tested with `pytest` + `unittest.mock.patch` on the OpenAI client (no real API calls in tests) — both happy-path and retry-exhaustion cases green. Bugs hit + fixed: retry loop had an unconditional `return None` inside the except block that fired on the *first* failure regardless of attempt count (killed the retry entirely); system prompt embedded `Recipe.model_json_schema()` as a plain string (missing `f`-prefix) so the model received literal unevaluated Python text instead of the real schema; mock test fed a raw dict into `model_validate_json` (expects a JSON string, not a dict) — all logged in "Recurring small-detail gaps" below. Key concept learned: `response_format` (constrained decoding, server-side, syntactic guarantee) and Pydantic validation (client-side, semantic guarantee) are complementary, not redundant.
 
 ## Phase 1 target (12 weeks)
 
@@ -93,3 +98,5 @@ Track patterns here when Ved hits the same *kind* of bug more than once, so foun
 - **Env var loading order** (2026-08-05, Wk1 app.py): wrote `os.getenv()` in a file that never called `load_dotenv()` — had it in a separate `config.py` that was never imported. `.env` is inert until something loads it *before* the read happens; import order matters. Watch for repeats when adding new scripts/modules that need secrets.
 - **SDK client vs. provider endpoint mismatch** (2026-08-05, Wk1 app.py): set `openai.api_key` to a Groq key, but never overrode `base_url` — SDK still points at OpenAI's servers by default. Setting a key ≠ pointing at the right server. Watch for repeats when swapping providers behind an OpenAI-compatible SDK (Groq, Together, OpenRouter, etc.).
 - **Legacy vs. current API shape** (2026-08-05, Wk1 app.py): called `completions.create(prompt=...)` (legacy text-completion endpoint) against a chat model — needed `chat.completions.create(messages=[...])`. Watch for repeats confusing older tutorial code with current chat-based APIs.
+- **Control flow inside except/loop blocks** (2026-08-07, Wk2 app.py): `return None` sat at the same indent as an `if attempt == max_attempts - 1` check inside a retry loop's except block — fired on the *first* failure instead of only the last, silently defeating the retry logic while looking correct at a glance. Watch for repeats when a loop has an early-exit statement near (but not inside) a conditional meant to gate it — check indentation maps to intent, not just that it runs without error.
+- **Forgotten f-string prefix** (2026-08-07, Wk2 app.py): wrote `"...schema: {'name': 'Recipe', 'schema': Recipe.model_json_schema()}"` as a plain string — no `f` prefix, so `Recipe.model_json_schema()` was sent to the model as literal text, never evaluated. Silent — no error, just wrong data flowing downstream. Watch for repeats whenever a string literal contains `{expression}` — confirm the `f` is there before assuming interpolation happened.

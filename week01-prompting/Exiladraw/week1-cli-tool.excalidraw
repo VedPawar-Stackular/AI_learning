@@ -1,0 +1,681 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "mcp-excalidraw-server",
+  "elements": [
+    {
+      "id": "wk1_title",
+      "type": "text",
+      "x": 60,
+      "y": 1250,
+      "width": 1300,
+      "height": 36,
+      "strokeColor": "#1e1e1e",
+      "text": "Week 1 — Hosted LLM CLI Tool (app.py, Groq via OpenAI-compatible SDK)",
+      "fontSize": 28,
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_subtitle",
+      "type": "text",
+      "x": 60,
+      "y": 1292,
+      "width": 1300,
+      "height": 26,
+      "strokeColor": "#868e96",
+      "text": "Flow: .env -> config.py -> app.py -> Groq API (chat.completions) -> stdout",
+      "fontSize": 18,
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_env",
+      "type": "rectangle",
+      "x": 60,
+      "y": 1340,
+      "width": 300,
+      "height": 90,
+      "backgroundColor": "#e9ecef",
+      "strokeColor": "#495057",
+      "label": {
+        "text": ".env (secret, gitignored)\nGROQ_API_KEY=..."
+      },
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_config",
+      "type": "rectangle",
+      "x": 420,
+      "y": 1340,
+      "width": 320,
+      "height": 90,
+      "backgroundColor": "#a5d8ff",
+      "strokeColor": "#1971c2",
+      "label": {
+        "text": "config.py\nload_dotenv()\ngroq_api_key = os.getenv(\"GROQ_API_KEY\")"
+      },
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_app",
+      "type": "rectangle",
+      "x": 800,
+      "y": 1340,
+      "width": 340,
+      "height": 110,
+      "backgroundColor": "#b2f2bb",
+      "strokeColor": "#2f9e44",
+      "label": {
+        "text": "app.py (CLI script)\nfrom config import groq_api_key\nbuilds system+user prompt string"
+      },
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_a1",
+      "type": "arrow",
+      "x": 368,
+      "y": 1385,
+      "width": 60,
+      "height": 0,
+      "strokeColor": "#1e1e1e",
+      "label": {
+        "text": "load_dotenv() reads file"
+      },
+      "points": [[0, 0], [44, 0]],
+      "start": {"id": "wk1_env"},
+      "end": {"id": "wk1_config"},
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_a2",
+      "type": "arrow",
+      "x": 747.9973714472759,
+      "y": 1389.3076249089047,
+      "width": 60,
+      "height": 0,
+      "strokeColor": "#1e1e1e",
+      "label": {
+        "text": "import groq_api_key"
+      },
+      "points": [[0, 0], [44.00525710544821, 1.1283399257804376]],
+      "start": {"id": "wk1_config"},
+      "end": {"id": "wk1_app"},
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_client",
+      "type": "rectangle",
+      "x": 800,
+      "y": 1490,
+      "width": 340,
+      "height": 120,
+      "backgroundColor": "#eebefa",
+      "strokeColor": "#9c36b5",
+      "label": {
+        "text": "openai.OpenAI(\n  api_key=groq_api_key,\n  base_url=\"https://api.groq.com/openai/v1\"\n)"
+      },
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_a3",
+      "type": "arrow",
+      "x": 970,
+      "y": 1458,
+      "width": 0,
+      "height": 40,
+      "strokeColor": "#9c36b5",
+      "label": {
+        "text": "init client (base_url fix)"
+      },
+      "points": [[0, 0], [0, 24]],
+      "start": {"id": "wk1_app"},
+      "end": {"id": "wk1_client"},
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_groqapi",
+      "type": "rectangle",
+      "x": 800,
+      "y": 1650,
+      "width": 340,
+      "height": 120,
+      "backgroundColor": "#ffd8a8",
+      "strokeColor": "#e8590c",
+      "label": {
+        "text": "Groq API (external)\nPOST /openai/v1/chat/completions\nmodel: openai/gpt-oss-20b\nmessages=[{role:user, content:prompt}]"
+      },
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_a4",
+      "type": "arrow",
+      "x": 970,
+      "y": 1618,
+      "width": 0,
+      "height": 40,
+      "strokeColor": "#e8590c",
+      "label": {
+        "text": "chat.completions.create()"
+      },
+      "points": [[0, 0], [0, 24]],
+      "start": {"id": "wk1_client"},
+      "end": {"id": "wk1_groqapi"},
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_resp",
+      "type": "rectangle",
+      "x": 800,
+      "y": 1810,
+      "width": 340,
+      "height": 90,
+      "backgroundColor": "#99e9f2",
+      "strokeColor": "#0c8599",
+      "label": {
+        "text": "completion object\n.choices[0].message.content"
+      },
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_a5",
+      "type": "arrow",
+      "x": 970,
+      "y": 1778,
+      "width": 0,
+      "height": 40,
+      "strokeColor": "#0c8599",
+      "label": {
+        "text": "HTTPS response"
+      },
+      "points": [[0, 0], [0, 24]],
+      "start": {"id": "wk1_groqapi"},
+      "end": {"id": "wk1_resp"},
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_stdout",
+      "type": "rectangle",
+      "x": 800,
+      "y": 1940,
+      "width": 340,
+      "height": 120,
+      "backgroundColor": "#ffc9c9",
+      "strokeColor": "#e03131",
+      "label": {
+        "text": "print(completion...content)\nWindows console = cp1252\nUnicodeEncodeError on U+202F\n(fix: sys.stdout.reconfigure utf-8)"
+      },
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk1_a6",
+      "type": "arrow",
+      "x": 970,
+      "y": 1908,
+      "width": 0,
+      "height": 40,
+      "strokeColor": "#e03131",
+      "label": {
+        "text": "stdout"
+      },
+      "points": [[0, 0], [0, 24]],
+      "start": {"id": "wk1_resp"},
+      "end": {"id": "wk1_stdout"},
+      "createdAt": "2026-08-05T11:13:31.591Z",
+      "updatedAt": "2026-08-05T11:13:31.591Z",
+      "version": 1
+    },
+    {
+      "id": "wk2_title",
+      "type": "text",
+      "x": 60,
+      "y": 2150,
+      "width": 1300,
+      "height": 36,
+      "strokeColor": "#1e1e1e",
+      "text": "Week 2 — Structured Output + Pydantic Validation (week02-structured-output/)",
+      "fontSize": 28,
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:21:35.938Z",
+      "version": 1
+    },
+    {
+      "id": "wk2_subtitle",
+      "type": "text",
+      "x": 60,
+      "y": 2192,
+      "width": 1300,
+      "height": 26,
+      "strokeColor": "#868e96",
+      "text": "Flow: models.py (Recipe schema) -> app.py -> Groq (json_schema constrained decoding) -> raw JSON -> Pydantic validate -> retry loop on error -> Recipe",
+      "fontSize": 18,
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:21:35.938Z",
+      "version": 1
+    },
+    {
+      "id": "wk2_models",
+      "type": "rectangle",
+      "x": 60,
+      "y": 2240,
+      "width": 300,
+      "height": 110,
+      "backgroundColor": "#d0bfff",
+      "strokeColor": "#7048e8",
+      "label": {
+        "text": "models.py\nclass Recipe(BaseModel):\n  name: str\n  ingredients: list[str]\n  time_minutes: int"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:02.670Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_config",
+      "type": "rectangle",
+      "x": 420,
+      "y": 2240,
+      "width": 260,
+      "height": 110,
+      "backgroundColor": "#a5d8ff",
+      "strokeColor": "#1971c2",
+      "label": {
+        "text": "config.py\n(reused from wk1)\ngroq_api_key"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:04.529Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_app",
+      "type": "rectangle",
+      "x": 740,
+      "y": 2240,
+      "width": 340,
+      "height": 110,
+      "backgroundColor": "#b2f2bb",
+      "strokeColor": "#2f9e44",
+      "label": {
+        "text": "app.py\nsystem_prompt + user_prompt\nfor attempt in range(max_attempts):"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:06.335Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n2133r26a0ddug",
+      "type": "arrow",
+      "x": 368,
+      "y": 2295,
+      "width": 44,
+      "height": 0,
+      "strokeColor": "#7048e8",
+      "label": {
+        "text": "Recipe.model_json_schema()"
+      },
+      "points": [[0, 0], [364, 0]],
+      "start": {"id": "wk2_models"},
+      "end": {"id": "wk2_app"},
+      "createdAt": "2026-08-05T13:21:35.939Z",
+      "updatedAt": "2026-08-05T13:23:51.120Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21w4wdcbxsvh",
+      "type": "arrow",
+      "x": 688,
+      "y": 2295,
+      "width": 44,
+      "height": 0,
+      "strokeColor": "#1971c2",
+      "label": {
+        "text": "import groq_api_key"
+      },
+      "points": [[0, 0], [44, 0]],
+      "start": {"id": "wk2_config"},
+      "end": {"id": "wk2_app"},
+      "createdAt": "2026-08-05T13:21:35.939Z",
+      "updatedAt": "2026-08-05T13:23:51.679Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_client",
+      "type": "rectangle",
+      "x": 740,
+      "y": 2410,
+      "width": 340,
+      "height": 130,
+      "backgroundColor": "#eebefa",
+      "strokeColor": "#9c36b5",
+      "label": {
+        "text": "client.chat.completions.create(\n  response_format={\n    type: json_schema,\n    json_schema: {name: Recipe,\n      schema: Recipe.model_json_schema()}\n  })"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:08.208Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n2186il9cpuei8",
+      "type": "arrow",
+      "x": 910,
+      "y": 2358,
+      "width": 0,
+      "height": 50,
+      "strokeColor": "#2f9e44",
+      "label": {
+        "text": "build request"
+      },
+      "points": [[0, 0], [0, 44]],
+      "start": {"id": "wk2_app"},
+      "end": {"id": "wk2_client"},
+      "createdAt": "2026-08-05T13:21:35.939Z",
+      "updatedAt": "2026-08-05T13:23:52.331Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_groq",
+      "type": "rectangle",
+      "x": 740,
+      "y": 2600,
+      "width": 340,
+      "height": 120,
+      "backgroundColor": "#ffd8a8",
+      "strokeColor": "#e8590c",
+      "label": {
+        "text": "Groq API (external)\nconstrained decoding —\nenforces schema at token level"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:10.258Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21tdt61j0ivh",
+      "type": "arrow",
+      "x": 910,
+      "y": 2548,
+      "width": 0,
+      "height": 50,
+      "strokeColor": "#9c36b5",
+      "label": {
+        "text": "POST chat/completions"
+      },
+      "points": [[0, 0], [0, 44]],
+      "start": {"id": "wk2_client"},
+      "end": {"id": "wk2_groq"},
+      "createdAt": "2026-08-05T13:21:35.939Z",
+      "updatedAt": "2026-08-05T13:23:53.145Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_raw",
+      "type": "rectangle",
+      "x": 740,
+      "y": 2780,
+      "width": 340,
+      "height": 90,
+      "backgroundColor": "#99e9f2",
+      "strokeColor": "#0c8599",
+      "label": {
+        "text": "raw JSON string\ncompletion.choices[0].message.content"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:11.683Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21qqi1zcpprus",
+      "type": "arrow",
+      "x": 910,
+      "y": 2728,
+      "width": 0,
+      "height": 50,
+      "strokeColor": "#e8590c",
+      "label": {
+        "text": "HTTPS response"
+      },
+      "points": [[0, 0], [0, 44]],
+      "start": {"id": "wk2_groq"},
+      "end": {"id": "wk2_raw"},
+      "createdAt": "2026-08-05T13:21:35.939Z",
+      "updatedAt": "2026-08-05T13:23:54.105Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_validate",
+      "type": "diamond",
+      "x": 760,
+      "y": 2930,
+      "width": 300,
+      "height": 110,
+      "backgroundColor": "#fff3bf",
+      "strokeColor": "#f08c00",
+      "label": {
+        "text": "Recipe.model_validate_json(raw)"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:13.319Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21w20krnm7rgc",
+      "type": "arrow",
+      "x": 910,
+      "y": 2878,
+      "width": 0,
+      "height": 50,
+      "strokeColor": "#0c8599",
+      "label": {
+        "text": "validate"
+      },
+      "points": [[0, 0], [0, 44]],
+      "start": {"id": "wk2_raw"},
+      "end": {"id": "wk2_validate"},
+      "createdAt": "2026-08-05T13:21:35.939Z",
+      "updatedAt": "2026-08-05T13:23:55.272Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_success",
+      "type": "rectangle",
+      "x": 1180,
+      "y": 2940,
+      "width": 320,
+      "height": 100,
+      "backgroundColor": "#b2f2bb",
+      "strokeColor": "#2f9e44",
+      "label": {
+        "text": "Validated Recipe object\nprint(recipe) -> break (done)"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:14.828Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21rn18e1092e9",
+      "type": "arrow",
+      "x": 1063.38880348425,
+      "y": 2986.783590738189,
+      "width": 110,
+      "height": 0,
+      "strokeColor": "#2f9e44",
+      "label": {
+        "text": "valid"
+      },
+      "points": [[0, 0], [108.61173729379493, 1.2629271778346265]],
+      "start": {"id": "wk2_validate"},
+      "end": {"id": "wk2_success"},
+      "createdAt": "2026-08-05T13:21:35.939Z",
+      "updatedAt": "2026-08-05T13:23:56.447Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_fail",
+      "type": "rectangle",
+      "x": 340,
+      "y": 2940,
+      "width": 320,
+      "height": 100,
+      "backgroundColor": "#ffc9c9",
+      "strokeColor": "#e03131",
+      "label": {
+        "text": "pydantic.ValidationError\ne.errors() -> error_string"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:15.643Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21onwcz1hgd3",
+      "type": "arrow",
+      "x": 756.8289209979096,
+      "y": 2986.8679399878306,
+      "width": -100,
+      "height": 0,
+      "strokeColor": "#e03131",
+      "label": {
+        "text": "invalid"
+      },
+      "points": [[0, 0], [-88.82951581556165, 1.0832867782382891]],
+      "start": {"id": "wk2_validate"},
+      "end": {"id": "wk2_fail"},
+      "createdAt": "2026-08-05T13:21:35.940Z",
+      "updatedAt": "2026-08-05T13:23:57.650Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21r1bhv1z7lg7",
+      "type": "arrow",
+      "x": 500,
+      "y": 3048,
+      "width": 0,
+      "height": 50,
+      "strokeColor": "#e03131",
+      "label": {
+        "text": "build retry prompt"
+      },
+      "points": [[0, 0], [0, 34]],
+      "start": {"id": "wk2_fail"},
+      "end": {"id": "wk2_retry"},
+      "createdAt": "2026-08-05T13:21:35.940Z",
+      "updatedAt": "2026-08-05T13:23:58.784Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_retry",
+      "type": "rectangle",
+      "x": 340,
+      "y": 3090,
+      "width": 320,
+      "height": 100,
+      "backgroundColor": "#ffd8a8",
+      "strokeColor": "#e8590c",
+      "strokeStyle": "dashed",
+      "label": {
+        "text": "prompt += error_string\nattempt += 1 (max 3)"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:16.695Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n212n0qe4g4iqy",
+      "type": "arrow",
+      "x": 535.025559029339,
+      "y": 3083.1902518182674,
+      "width": -260,
+      "height": -650,
+      "strokeColor": "#e8590c",
+      "strokeStyle": "dashed",
+      "label": {
+        "text": "retry: re-call w/ error context"
+      },
+      "points": [[0, 0], [330.70076164057014, -536.3805036365347]],
+      "start": {"id": "wk2_retry"},
+      "end": {"id": "wk2_client"},
+      "createdAt": "2026-08-05T13:21:35.940Z",
+      "updatedAt": "2026-08-05T13:23:59.810Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_bugsnote",
+      "type": "rectangle",
+      "x": 1180,
+      "y": 3090,
+      "width": 320,
+      "height": 170,
+      "backgroundColor": "#ffffff",
+      "strokeColor": "#e03131",
+      "strokeStyle": "dashed",
+      "label": {
+        "text": "Bugs found + fixed this session:\n- system_prompt was a plain string, not f-string -> Recipe.model_json_schema() sent as literal text; model echoed schema shape instead of real data\n- caught fastapi.HTTPException (dead code) instead of openai.APIError"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:18.857Z",
+      "version": 2
+    },
+    {
+      "id": "msg48n21pchzpgdn0cq",
+      "type": "arrow",
+      "x": 500,
+      "y": 3198,
+      "width": 0,
+      "height": 50,
+      "strokeColor": "#e03131",
+      "label": {
+        "text": "if attempt == max_attempts"
+      },
+      "points": [[0, 0], [0, 34]],
+      "start": {"id": "wk2_retry"},
+      "end": {"id": "wk2_exhausted"},
+      "createdAt": "2026-08-05T13:21:35.940Z",
+      "updatedAt": "2026-08-05T13:24:01.066Z",
+      "version": 2
+    },
+    {
+      "id": "wk2_exhausted",
+      "type": "rectangle",
+      "x": 340,
+      "y": 3240,
+      "width": 320,
+      "height": 110,
+      "backgroundColor": "#ffc9c9",
+      "strokeColor": "#e03131",
+      "strokeStyle": "dashed",
+      "label": {
+        "text": "3/3 attempts exhausted\nBUG (open): loop ends silently —\nno raise/log on total failure"
+      },
+      "createdAt": "2026-08-05T13:21:35.938Z",
+      "updatedAt": "2026-08-05T13:23:17.739Z",
+      "version": 2
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  }
+}
