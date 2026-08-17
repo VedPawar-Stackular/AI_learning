@@ -1,7 +1,7 @@
 from config import groq_api_key
 import openai
 from tools import get_weather, search_wikipedia
-from models import ToolCall, ToolCalls, WeatherInput, WeatherOutput, WikipediaInput, WikipediaOutput
+from models import WeatherInput, WikipediaInput
 import json
 
 client = openai.OpenAI(
@@ -41,7 +41,7 @@ def main():
     Think before you answer: Always think about the answer before you answer.
     """
     user_prompt = """
-    User: Give me a wikipidia knowledge about cars?
+    User: Whats the weather like now in bangalore?
     """
     prompt = system_prompt + "\n" + user_prompt
     
@@ -53,7 +53,7 @@ def main():
 
     response = client.chat.completions.create(
         model="openai/gpt-oss-20b",
-        messages=messages,
+        messages=messages, # type: ignore
         tools=tools,
         temperature=0.6,
         max_tokens=1000,
@@ -80,8 +80,8 @@ def main():
         # 3. Handle the tool execution safely with validation
         if tool_calls:
             for tool_call in tool_calls:
-                name = tool_call.function.name
-                raw_args = json.loads(tool_call.function.arguments)
+                name = tool_call.function.name # type: ignore
+                raw_args = json.loads(tool_call.function.arguments) # type: ignore
 
                 print(f"AI requested tool: {name} with arguments:   {raw_args}") #this is the name of the tool and the arguments passed to the tool
 
@@ -112,7 +112,7 @@ def main():
                         response = client.chat.completions.create(
                             model="openai/gpt-oss-20b",
                             tools=tools,
-                            messages=messages,
+                            messages=messages, # type: ignore
                             temperature=0.6,
                             max_tokens=1000,
                         )
